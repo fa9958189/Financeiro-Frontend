@@ -9,100 +9,109 @@ import api from '../../server/api';
 
 
 export default function EditarProduto() {
-    let { id } = useParams();
-    const navigate = useNavigate();
-    const [status, setStatus] = useState("");
-    const [descricao, setDescricao] = useState("");
-    const [estoque_minimo, setEstoque_minimo] = useState("");
-    const [estoque_maximo, setEstoque_maximo] = useState("");
+  let { id } = useParams();
+  const navigate = useNavigate();
+  const [status, setStatus] = useState("");
+  const [descricao, setDescricao] = useState("");
+  const [medidaPorMetro, setMedidaPorMetro] = useState("");
+  const [valor, setValor] = useState("");
+  const [dataEntrada, setDataEntrada] = useState("");
 
-    useEffect(() => {
-        mostrarDados(id);
-    }, [])
+  useEffect(() => {
+    mostrarDados(id);
+  }, [])
 
-    async function mostrarDados(id) {
-        const response = await api.get(`/produto/${id}`);
-        const produto = response.data.produtos;
+  async function mostrarDados(id) {
+    const response = await api.get(`/produto/${id}`);
+    const produto = response.data.produtos;
 
-        setStatus(produto.status);
-        setDescricao(produto.descricao);
-        setEstoque_minimo(produto.estoque_minimo);
-        setEstoque_maximo(produto.estoque_maximo);
+    setStatus(produto.status);
+    setDescricao(produto.descricao);
+    setMedidaPorMetro(produto.medida_por_metro);
+    setValor(produto.valor);
+    setDataEntrada(produto.data_entrada);
+  }
+
+  function salvarDados(e) {
+    e.preventDefault();
+
+    if (status === "" || descricao === "" || medidaPorMetro === "" || valor === "" || dataEntrada === "") {
+      alert("Por favor, preencha todos os campos.");
+      return;
     }
 
-    function salvarDados(e) {
-        e.preventDefault();
+    const produto = {
+      id,
+      status,
+      descricao,
+      medida_por_metro: medidaPorMetro,
+      valor,
+      data_entrada: dataEntrada
+    };
 
-        if (status === "" || descricao === "" || estoque_minimo === "" || estoque_maximo === "") {
-            alert("Por favor, preencha todos os campos.");
-            return;
-        }
+    api.put(`/produto/${id}`, produto, { headers: { "Content-Type": "application/json" } })
+      .then(function (response) {
+        console.log(response.data);
+        alert(response.data.mensagem);
+        navigate('/listaprodutos');
+      })
+      .catch(function (error) {
+        console.error("Erro ao editar produto:", error);
+      });
+  }
 
-        const produto = {
-            id,
-            status,
-            descricao,
-            estoque_minimo,
-            estoque_maximo
-        };
+  return (
+    <div className="dashboard-container">
+      <div className='menu'>
+        <Menu />
+      </div>
+      <div className='principal'>
+        <Head title="Editar Produto" />
+        <div className='form-container'>
+          <form className='form-cadastro' onSubmit={salvarDados}>
+            <input type='text'
+              value={status}
+              onChange={e => setStatus(e.target.value)}
+              placeholder='Digite o status (Ativo/Inativo)'
+            />
+            <input
+              type='text'
+              value={descricao}
+              onChange={e => setDescricao(e.target.value)}
+              placeholder='Digite a descrição'
+            />
+            <input
+              type='text'
+              value={medidaPorMetro}
+              onChange={e => setMedidaPorMetro(e.target.value)}
+              placeholder='Digite a medida por metro'
+            />
+            <input
+              type='number'
+              value={valor}
+              onChange={e => setValor(e.target.value)}
+              placeholder='Digite o valor'
+            />
+            <input
+              type='date'
+              value={dataEntrada}
+              onChange={e => setDataEntrada(e.target.value)}
+              placeholder='Digite a data de entrada'
+            />
 
-        api.put('/produto', produto, { headers: { "Content-Type": "application/json" } })
-            .then(function (response) {
-                console.log(response.data);
-                alert(response.data.mensagem);
-                navigate('/listaprodutos');
-            })
-            .catch(function (error) {
-                console.error("Erro ao editar produto:", error);
-            });
-    }
-
-    return (
-        <div className="dashboard-container">
-            <div className='menu'>
-                <Menu />
+            <div className='acao'>
+              <button className='btn-save'>
+                <FaSave />
+                Salvar
+              </button>
+              <button className='btn-cancel'>
+                <MdCancel />
+                Cancelar
+              </button>
             </div>
-            <div className='principal'>
-                <Head title="Editar Produto" />
-                <div className='form-container'>
-                    <form className='form-cadastro' onSubmit={salvarDados}>
-                        <input type='text'
-                            value={status}
-                            onChange={e => setStatus(e.target.value)}
-                            placeholder='Digite o status'
-                        />
-                        <input
-                            type='text'
-                            value={descricao}
-                            onChange={e => setDescricao(e.target.value)}
-                            placeholder='Digite a descrição'
-                        />
-                        <input
-                            type='number'
-                            value={estoque_minimo}
-                            onChange={e => setEstoque_minimo(e.target.value)}
-                            placeholder='Digite o estoque mínimo'
-                        />
-                        <input
-                            type='number'
-                            value={estoque_maximo}
-                            onChange={e => setEstoque_maximo(e.target.value)}
-                            placeholder='Digite o estoque máximo'
-                        />
-
-                        <div className='acao'>
-                            <button className='btn-save'>
-                                <FaSave />
-                                Salvar
-                            </button>
-                            <button className='btn-cancel'>
-                                <MdCancel />
-                                Cancelar
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+          </form>
         </div>
-    )
+      </div>
+    </div>
+  )
 }

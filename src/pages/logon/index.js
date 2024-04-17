@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../server/api';
-import Logo from "../../assets/img/Logo.png";
+import Logo from "../../assets/img/Logo.svg";
 import "./styles.css";
 
 function Login() {
@@ -11,7 +11,12 @@ function Login() {
     const [isLoading, setIsLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
 
-
+    useEffect(() => {
+        document.body.classList.add('login-page');
+        return () => {
+            document.body.classList.remove('login-page');
+        };
+    }, []);
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -41,11 +46,9 @@ function Login() {
                 <img src={Logo} alt="Logo" className="logo-image" />
             </div>
             <section className="form">
-             <div className='preto'>
-             <h1>Faça seu login
-                jndjksbfiuhbfiuned
-             </h1>
-             </div>  
+                <div className='preto'>
+                    <h1>Faça seu login</h1>
+                </div>  
                 {errorMessage && <p className="error-message">{errorMessage}</p>}
                 <form onSubmit={handleLogin}>
                     <input

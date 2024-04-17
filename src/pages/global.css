@@ -22,7 +22,7 @@
     padding: 5px;
 }
 .dashboard-container {
-    background-image: url('/src/assets/img/capa para o projeto.svg');
+    background-image: url('/src/assets/img/projeto.png');
     background-size: cover;
     height: 100vh;
     display: flex;
