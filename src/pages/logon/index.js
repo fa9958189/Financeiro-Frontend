@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../../server/api';
-import Logo from "../../assets/img/Logo.svg";
+import Logo from "../../assets/img/Logo.png";
 import "./styles.css";
 
 function Login() {
@@ -46,9 +46,7 @@ function Login() {
                 <img src={Logo} alt="Logo" className="logo-image" />
             </div>
             <section className="form">
-                <div className='preto'>
-                    <h1>Faça seu login</h1>
-                </div>  
+                <h1 className="title">Faça seu login</h1>
                 {errorMessage && <p className="error-message">{errorMessage}</p>}
                 <form onSubmit={handleLogin}>
                     <input
@@ -56,14 +54,16 @@ function Login() {
                         type="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
+                        className="input-field"
                     />
                     <input
                         placeholder="Senha"
                         type="password"
                         value={senha}
                         onChange={(e) => setSenha(e.target.value)}
+                        className="input-field"
                     />
-                    <button type="submit" disabled={isLoading}>Entrar</button>
+                    <button type="submit" disabled={isLoading} className="btn-submit">Entrar</button>
                 </form>
             </section>
         </div>

@@ -5,7 +5,6 @@ import { FiUser, FiPackage, FiArrowUpCircle, FiArchive, FiArrowDownCircle, FiBar
 export default function Menu() {
     return (
         <div>
-            <h1>Menu</h1>
             <nav>
                 <Link to="/listausuario" className='link'><FiUser className='icos' />Usuário</Link> {/* User icon */}
                 <Link to="/listarGraficos" className='link'><FiBarChart2 className='icos' />Gráficos</Link> {/* Graphs icon - Change to the appropriate route */}

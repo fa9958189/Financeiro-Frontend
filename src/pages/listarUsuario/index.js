@@ -7,6 +7,7 @@ import Head from '../../componente/Head';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import api from '../../server/api';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function Listausuario() {
   const [banco, setBanco] = useState([]);
